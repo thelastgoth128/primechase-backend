@@ -1,3 +1,4 @@
+import { Role } from "src/components/enums/role.enum";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 
@@ -18,7 +19,7 @@ export class User {
     @Column({
         type: 'enum',
         enum: Role,
-        default:Role.customer
+        default:Role.CUSTOMER
     })
     role : Role
 
