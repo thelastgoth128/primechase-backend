@@ -4,6 +4,7 @@ import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
 import { Observable } from "rxjs";
 import { UserService } from "src/components/user/user.service";
+import { IS_PUBLIC_KEY } from "./public";
 
 
 @Injectable()
@@ -14,7 +15,7 @@ export class AuthGuard implements CanActivate {
         private userService : UserService
     ){}
 
-    async canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+    async canActivate(context: ExecutionContext): Promise<boolean>  {
         const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY,[
             context.getHandler(),
             context.getHandler()
