@@ -6,7 +6,6 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../enums/role.enum';
-import { access } from 'fs';
 import { Request } from 'express';
 
 @Injectable()
@@ -43,19 +42,19 @@ export class UserService {
     }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    return this.userrep.find()
   }
 
   async findMail(email: string) {
     return await this.userrep.findOne({where: {email}})
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.userrep.findOne({where:{userid: id}})
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto,@Req() req:Request) {
+  async update(updateUserDto: UpdateUserDto,@Req() req:Request) {
     const user = req.user?.userid
     const requester = await this.userrep.findOne({where: {userid:user}})
     if(!requester){
@@ -76,7 +75,13 @@ export class UserService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(@Req() req:Request) {
+    const userid = req.user?.userid
+    const requester = await this.userrep.findOne({where:{userid}})
+
+    if(!requester){
+      throw new NotFoundException("user not found")
+    }
+    await this.userrep.delete(requester)
   }
 }
