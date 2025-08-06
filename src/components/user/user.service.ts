@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException, Req } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../enums/role.enum';
 import { access } from 'fs';
+import { Request } from 'express';
 
 @Injectable()
 export class UserService {
@@ -54,8 +55,25 @@ export class UserService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-   
+  async update(id: number, updateUserDto: UpdateUserDto,@Req() req:Request) {
+    const user = req.user?.userid
+    const requester = await this.userrep.findOne({where: {userid:user}})
+    if(!requester){
+      throw new NotFoundException('user not found')
+    }
+    Object.assign(requester, updateUserDto)
+    await this.userrep.save(requester)
+    
+     const payload = {
+      userid: requester.userid,
+      name: requester.name,  
+      email: requester.email,
+      role: requester.role,
+      createdat: requester.created_at
+    }
+    return {
+      data: payload
+    }
   }
 
   remove(id: number) {
