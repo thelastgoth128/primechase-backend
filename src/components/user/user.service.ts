@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException, Req } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Req } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -75,13 +75,27 @@ export class UserService {
     }
   }
 
+  async saveResetToken(email: string, reset_token: string, expirationTime: Date){
+    await this.userrep.update(
+      { email },
+      {
+        reset_token,
+        reset_token_expiry: expirationTime
+      }
+    )
+  }
+
   async remove(@Req() req:Request) {
     const userid = req.user?.userid
     const requester = await this.userrep.findOne({where:{userid}})
 
+    if(!userid){
+      throw new BadRequestException('Missing user ID')
+    }
+
     if(!requester){
       throw new NotFoundException("user not found")
     }
-    await this.userrep.delete(requester)
+    await this.userrep.delete(userid)
   }
 }
