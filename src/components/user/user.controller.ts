@@ -3,17 +3,20 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import type { Request } from 'express';
+import * as bcrypt from 'bcrypt'
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  @Post('create')
+  async create(@Body() createUserDto: CreateUserDto) {
+    const hash = await bcrypt.hash(createUserDto.password,12)
+    createUserDto.password = hash
     return this.userService.create(createUserDto);
   }
 
-  @Get()
+  @Get('all')
   findAll() {
     return this.userService.findAll();
   }
@@ -24,12 +27,12 @@ export class UserController {
   }
 
   @Patch('detail-update')
-  update(@Body() updateUserDto: UpdateUserDto,@Req() request:Request) {
-    return this.userService.update(updateUserDto,request);
+  async update(@Body() updateUserDto: UpdateUserDto,@Req() request:Request) {
+    return await this.userService.update(updateUserDto,request);
   }
 
   @Delete('delete')
-  remove(@Req() request:Request){
-    return this.userService.remove(request);
+  async remove(@Req() request:Request){
+    return await this.userService.remove(request);
   }
 }
