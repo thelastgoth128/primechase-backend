@@ -6,7 +6,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../enums/role.enum';
-import { Request } from 'express';
+import type { Request } from 'express';
 
 @Injectable()
 export class UserService {
