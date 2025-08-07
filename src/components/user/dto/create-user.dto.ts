@@ -17,4 +17,10 @@ export class CreateUserDto {
 
     @IsDate()
     created_at: Date
+
+    @IsString()
+    reset_token : string
+
+    @IsString()
+    reset_token_expiry: Date
 }

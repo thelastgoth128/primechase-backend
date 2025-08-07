@@ -25,4 +25,10 @@ export class User {
 
     @Column()
     created_at : Date
+
+     @Column({nullable :true})
+    reset_token: string | null
+
+    @Column({nullable : true, type: 'timestamp',default:null})
+    reset_token_expiry: Date | null
 }
