@@ -26,7 +26,7 @@ export class User {
     @Column()
     created_at : Date
 
-     @Column({nullable :true})
+     @Column({type:'text',nullable :true})
     reset_token: string | null
 
     @Column({nullable : true, type: 'timestamp',default:null})
