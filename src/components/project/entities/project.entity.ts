@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Category } from "src/components/category/entities/category.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
@@ -18,7 +19,8 @@ export class Project {
     @Column()
     client_name: string
 
-    @Column()
+    @ManyToOne(()=>Category,category=>category.project_id)
+    @JoinColumn({name: 'category_id'})
     category_id: number
 
     @Column()
