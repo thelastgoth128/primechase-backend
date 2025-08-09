@@ -10,6 +10,9 @@ export class Category{
     @Column()
     name: string;
 
+    @Column()
+    description: string
+
     @OneToMany(()=>Project,project=>project.category_id)
     project_id: Category[]
 }
