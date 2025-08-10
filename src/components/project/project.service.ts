@@ -26,9 +26,20 @@ export class ProjectService {
       message:'Project successfully created, waiting for admin to approve'
     }
   }
-
+  //admin
   async findAll() {
-    return this.projectrep.find()
+    return await this.projectrep.find()
+  }
+
+  async findAllByUser(@Req() req:Request) {
+    const userid = req.user?.userid
+    if(!userid){
+      throw new NotFoundException("User not found")
+    }
+    const user = await this.userService.findOne(userid)
+
+    
+    return await this.projectrep.find({where: {client_email:user?.email}})
   }
 
   findOne(id: number) {
