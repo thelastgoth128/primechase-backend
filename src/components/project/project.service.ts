@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Req } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, Req } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -30,7 +30,7 @@ export class ProjectService {
   async findAll() {
     return await this.projectrep.find()
   }
-
+  //users projects
   async findAllByUser(@Req() req:Request) {
     const userid = req.user?.userid
     if(!userid){
@@ -38,19 +38,33 @@ export class ProjectService {
     }
     const user = await this.userService.findOne(userid)
 
-    
+
     return await this.projectrep.find({where: {client_email:user?.email}})
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} project`;
+  async findOne(id: number) {
+    return await this.projectrep.findOne({where: {id:id}})
   }
 
-  update(id: number, updateProjectDto: UpdateProjectDto) {
-    return `This action updates a #${id} project`;
+  async update(id: number, updateProjectDto: UpdateProjectDto, @Req() req:Request) {
+    const project = await this.projectrep.findOne({where: {id}})
+    if (!project){
+      throw new NotFoundException("Project not found")
+    }
+    Object.assign(project, updateProjectDto)
+    return{
+      message:"Successfully updated"
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+  async remove(id: number) {
+    const project = await this.projectrep.findOne({where:{id}})
+    if (!project){
+      throw new NotFoundException("project not found")
+    }
+    await this.projectrep.delete(id)
+    return{
+      message: "Successfully deleted Project"
+    }
   }
 }
