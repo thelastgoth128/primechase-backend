@@ -6,7 +6,6 @@ import { Project } from './entities/project.entity';
 import { Repository } from 'typeorm';
 import type { Request } from 'express';
 import { UserService } from '../user/user.service';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class ProjectService {
