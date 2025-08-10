@@ -28,7 +28,7 @@ export class ProjectService {
   }
 
   async findAll() {
-    return `This action returns all project`;
+    return this.projectrep.find()
   }
 
   findOne(id: number) {
