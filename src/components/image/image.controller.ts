@@ -1,12 +1,13 @@
-import { Controller, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { CloudinaryService } from "../services/cloudinary.service";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { ImageService } from "./image.service";
 
 @Controller('images')
 export class ImageController {
     constructor(
         private readonly cloudinaryService : CloudinaryService,
-        
+        private readonly imageService : ImageService
     ){}
 
     @Post('upload')
