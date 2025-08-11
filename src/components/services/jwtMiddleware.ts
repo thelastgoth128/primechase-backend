@@ -1,11 +1,11 @@
 import { Injectable, NestMiddleware } from "@nestjs/common";
-import { NextFunction, Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as jwt from 'jsonwebtoken'
 
 
 @Injectable()
 export class JwtMiddleware implements NestMiddleware{
-    use(req: Request,next: NextFunction) {
+    use(req: Request, res: Response, next: NextFunction) {
         const token = req.cookies['jwt']
         const secret = process.env.JWT_SECRET
         if(!secret){
