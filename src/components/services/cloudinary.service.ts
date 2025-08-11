@@ -8,13 +8,14 @@ export class CloudinaryService {
             api_secret: process.env.API_SECRET,
         })
     }
-    async uploadImage(
-        filePath: string,
-    ) {
+    async uploadImage(filePath: string): Promise<UploadApiResponse | UploadApiErrorResponse> {
         return new Promise((resolve, reject) => {
             v2.uploader.upload(filePath,{folder:'Primechase Studios'}, (error,result)=>{
                 if(error){
                     return reject(error)
+                }
+                if (!result) {
+                    return reject(new Error('Upload result is undefined'));
                 }
                 resolve(result)
             })
