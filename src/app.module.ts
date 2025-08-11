@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './components/user/user.module';
@@ -7,9 +7,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './components/user/entities/user.entity';
 import { ProjectModule } from './components/project/project.module';
+import { Project } from './components/project/entities/project.entity';
+import { JwtMiddleware } from './components/services/jwtMiddleware';
 
 @Module({
-  imports: [UserModule, AuthModule,
+  imports: [UserModule, AuthModule, ProjectModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath:".env"
@@ -19,14 +21,17 @@ import { ProjectModule } from './components/project/project.module';
       useFactory:async (configService : ConfigService)=>({
         type: "postgres",
         url:configService.get<string>('DATABASE_URL'),
-        entities:[User],
+        entities:[User,Project],
         synchronize:false,
       }),
       inject: [ConfigService],
     }),
-    ProjectModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer){
+    consumer.apply(JwtMiddleware).forRoutes('*')
+  }
+}
