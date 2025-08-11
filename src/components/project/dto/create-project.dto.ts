@@ -38,7 +38,7 @@ export class CreateProjectDto {
         rejection_reason: string
     
         @IsInt()
-        category_id: number
+        category: number
     
         @IsDate()
         created_at: Date
