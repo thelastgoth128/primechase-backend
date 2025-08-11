@@ -6,12 +6,16 @@ import { Project } from './entities/project.entity';
 import { Repository } from 'typeorm';
 import type { Request } from 'express';
 import { UserService } from '../user/user.service';
+import { Status } from '../enums/status.ennum';
+import { Category } from '../category/entities/category.entity';
 
 @Injectable()
 export class ProjectService {
   @InjectRepository(Project)
   private readonly projectrep : Repository<Project>
   private userService : UserService
+  @InjectRepository(Category)
+  private readonly categoryRepo : Repository<Category>
 
   async create(createProjectDto: CreateProjectDto, @Req() req:Request) {
     const userid = req.user?.userid
@@ -20,7 +24,18 @@ export class ProjectService {
       throw new NotFoundException('user not found')
     }
     const user = await this.userService.findOne(userid)
-    await this.projectrep.save(createProjectDto)
+    const category = await this.categoryRepo.findOneBy({ id: createProjectDto.category });
+
+    if (!category) {
+      throw new NotFoundException('Category not found');
+    }
+    const project = await this.projectrep.create({
+      ...createProjectDto,
+      category,
+      status: Status.pending,
+      created_at: new Date(),
+    })
+    await this.projectrep.save(project)
     return {
       message:'Project successfully created, waiting for admin to approve'
     }
