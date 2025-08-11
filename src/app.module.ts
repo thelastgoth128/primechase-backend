@@ -14,9 +14,11 @@ import { CloudinaryService } from './components/services/cloudinary.service';
 import { ImageModule } from './components/image/image.module';
 import { CategoryModule } from './components/category/category.module';
 import { Category } from './components/category/entities/category.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { ImageController } from './components/image/image.controller';
 
 @Module({
-  imports: [UserModule, AuthModule, ProjectModule, ImageModule, CategoryModule,
+  imports: [UserModule, AuthModule, ProjectModule, ImageModule, CategoryModule, JwtModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath:".env"
@@ -35,7 +37,7 @@ import { Category } from './components/category/entities/category.entity';
       dest:'./uploads'
     })
   ],
-  controllers: [AppController],
+  controllers: [AppController,ImageController],
   providers: [AppService, CloudinaryService],
 })
 export class AppModule implements NestModule {
