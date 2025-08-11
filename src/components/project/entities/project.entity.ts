@@ -17,7 +17,7 @@ export class Project {
     @Column()
     style_reference: string
 
-    @Column()
+    @Column('text',{array: true})
     color_preferences: string[]
 
     @Column()
@@ -50,7 +50,7 @@ export class Project {
 
     @ManyToOne(()=>Category,category=>category.project_id)
     @JoinColumn({name: 'category_id'})
-    category_id: number
+    category: Category
 
     @Column()
     created_at: Date
