@@ -7,9 +7,13 @@ import * as jwt from 'jsonwebtoken'
 export class JwtMiddleware implements NestMiddleware{
     use(req: Request,next: NextFunction) {
         const token = req.cookies['jwt']
+        const secret = process.env.JWT_SECRET
+        if(!secret){
+            throw new Error("no secret")
+        }
         if (token){
             try{
-                const decoded = jwt.verify(token,'')
+                const decoded = jwt.verify(token,secret)
                 req.user = decoded as any
             }catch(error){
                 console.error('JWT verification failed:', error)
