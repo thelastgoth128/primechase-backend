@@ -12,9 +12,11 @@ import { JwtMiddleware } from './components/services/jwtMiddleware';
 import { MulterModule } from '@nestjs/platform-express';
 import { CloudinaryService } from './components/services/cloudinary.service';
 import { ImageModule } from './components/image/image.module';
+import { CategoryModule } from './components/category/category.module';
+import { Category } from './components/category/entities/category.entity';
 
 @Module({
-  imports: [UserModule, AuthModule, ProjectModule, ImageModule,
+  imports: [UserModule, AuthModule, ProjectModule, ImageModule, CategoryModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath:".env"
@@ -24,7 +26,7 @@ import { ImageModule } from './components/image/image.module';
       useFactory:async (configService : ConfigService)=>({
         type: "postgres",
         url:configService.get<string>('DATABASE_URL'),
-        entities:[User,Project],
+        entities:[User,Project,Category],
         synchronize:false,
       }),
       inject: [ConfigService],
