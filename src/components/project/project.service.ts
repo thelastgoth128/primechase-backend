@@ -45,7 +45,7 @@ export class ProjectService {
     return await this.projectrep.findOne({where: {id:id}})
   }
 
-  async update(id: number, updateProjectDto: UpdateProjectDto, @Req() req:Request) {
+  async update(id: number, updateProjectDto: UpdateProjectDto) {
     const project = await this.projectrep.findOne({where: {id}})
     if (!project){
       throw new NotFoundException("Project not found")
