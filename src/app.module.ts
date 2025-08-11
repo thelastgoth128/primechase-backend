@@ -11,9 +11,10 @@ import { Project } from './components/project/entities/project.entity';
 import { JwtMiddleware } from './components/services/jwtMiddleware';
 import { MulterModule } from '@nestjs/platform-express';
 import { CloudinaryService } from './components/services/cloudinary.service';
+import { ImageModule } from './components/image/image.module';
 
 @Module({
-  imports: [UserModule, AuthModule, ProjectModule,
+  imports: [UserModule, AuthModule, ProjectModule, ImageModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath:".env"
