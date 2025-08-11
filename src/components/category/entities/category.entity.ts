@@ -13,6 +13,6 @@ export class Category{
     @Column()
     description: string
 
-    @OneToMany(()=>Project,project=>project.category_id)
+    @OneToMany(()=>Project,project=>project.category)
     project_id: Category[]
 }
