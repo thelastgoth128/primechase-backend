@@ -20,10 +20,12 @@ export class UserService {
     const { email } = createUserDto
 
     const exists = await this.userrep.find({where: {email}})
-    if (exists) {
+    if (!exists) {
       throw new ForbiddenException('email already exists, please login')
     }
     createUserDto.role = Role.CUSTOMER
+    createUserDto.created_at = new Date()
+    
     const user = await this.userrep.save(createUserDto)
 
     const payload = {
