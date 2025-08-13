@@ -14,44 +14,45 @@ export class Project {
     @Column()
     description: string
 
-    @Column()
+    @Column({ nullable: true })
     style_reference: string
 
-    @Column('text',{array: true})
+    @Column('text',{array: true,nullable: true},)
     color_preferences: string[]
 
-    @Column()
+    @Column({nullable: true})
     font_preferences: string
 
-    @Column()
+    @Column({nullable:true})
     image_url: string
 
-    @Column()
+    @Column({nullable : true})
     start_date: Date
 
-    @Column()
+    @Column({nullable: true})
     due_date: Date
 
-    @Column()
+    @Column({nullable: true})
     client_name: string
 
-    @Column()
+    @Column({nullable: true})
     client_email: string
 
     @Column({
         type:'enum',
         enum:Status,
         default:Status.pending,
+        nullable:true
     })
     status: string
 
-    @Column()
+    @Column({nullable: true})
     rejection_reason: string
 
     @ManyToOne(()=>Category,category=>category.project_id)
     @JoinColumn({name: 'category_id'})
     category: Category
 
-    @Column()
+    @Column({nullable:true})
     created_at: Date
 }
