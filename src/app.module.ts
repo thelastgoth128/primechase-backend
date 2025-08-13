@@ -29,7 +29,7 @@ import { ImageController } from './components/image/image.controller';
         type: "postgres",
         url:configService.get<string>('DATABASE_URL'),
         entities:[User,Project,Category],
-        synchronize:false,
+        synchronize:true,
       }),
       inject: [ConfigService],
     }),
