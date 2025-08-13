@@ -2,9 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-import { sign } from 'crypto';
 import type { Response } from 'express';
+import { Public } from './guards/public';
 
+@Public()
 @Controller('auth')
 export class AuthController {
   constructor(
