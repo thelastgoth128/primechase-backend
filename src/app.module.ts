@@ -16,6 +16,7 @@ import { CategoryModule } from './components/category/category.module';
 import { Category } from './components/category/entities/category.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ImageController } from './components/image/image.controller';
+import { CategorysModule } from './components/categorys/categorys.module';
 
 @Module({
   imports: [UserModule, AuthModule, ProjectModule, ImageModule, CategoryModule, JwtModule,
@@ -35,7 +36,8 @@ import { ImageController } from './components/image/image.controller';
     }),
     MulterModule.register({
       dest:'./uploads'
-    })
+    }),
+    CategorysModule
   ],
   controllers: [AppController,ImageController],
   providers: [AppService, CloudinaryService],

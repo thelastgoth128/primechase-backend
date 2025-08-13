@@ -5,15 +5,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from './entities/project.entity';
 import { Repository } from 'typeorm';
 import type { Request } from 'express';
-import { UserService } from '../user/user.service';
 import { Status } from '../enums/status.ennum';
 import { Category } from '../category/entities/category.entity';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class ProjectService {
   @InjectRepository(Project)
   private readonly projectrep : Repository<Project>
-  private userService : UserService
+  @InjectRepository(User)
+  private readonly userrep : Repository<User>
   @InjectRepository(Category)
   private readonly categoryRepo : Repository<Category>
 
@@ -23,7 +24,7 @@ export class ProjectService {
     if (!userid) {
       throw new NotFoundException('user not found')
     }
-    const user = await this.userService.findOne(userid)
+    const user = await this.userrep.findOne({where: {userid}})
     const category = await this.categoryRepo.findOneBy({ id: createProjectDto.category });
 
     if (!category) {
@@ -50,7 +51,7 @@ export class ProjectService {
     if(!userid){
       throw new NotFoundException("User not found")
     }
-    const user = await this.userService.findOne(userid)
+    const user = await this.userrep.findOne({where:{userid}})
 
 
     return await this.projectrep.find({where: {client_email:user?.email}})

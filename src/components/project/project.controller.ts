@@ -5,12 +5,12 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import type { Request } from 'express';
 import { Public } from '../auth/guards/public';
 
-@Public()
+//@Public()
 @Controller('project')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createProjectDto: CreateProjectDto, @Req() request:Request) {
     return this.projectService.create(createProjectDto,request);
   }
