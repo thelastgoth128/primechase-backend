@@ -37,7 +37,7 @@ export class AuthService {
       role: user.role,
       createdat: user.created_at
     }
-    const jwt = await this.jwtService.signAsync(payload)
+    const jwt = await this.jwtService.signAsync(payload,{secret: process.env.JWT_SECRET})
     return {
       access_token : jwt,
       data : payload
