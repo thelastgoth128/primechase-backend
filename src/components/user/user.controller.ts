@@ -4,7 +4,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import type { Request } from 'express';
 import * as bcrypt from 'bcrypt'
+import { Public } from '../auth/guards/public';
 
+@Public()
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

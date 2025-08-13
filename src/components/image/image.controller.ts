@@ -2,7 +2,9 @@ import { Body, Controller, Post, UploadedFile, UseInterceptors } from "@nestjs/c
 import { CloudinaryService } from "../services/cloudinary.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ImageService } from "./image.service";
+import { Public } from "../auth/guards/public";
 
+@Public()
 @Controller('images')
 export class ImageController {
     constructor(
