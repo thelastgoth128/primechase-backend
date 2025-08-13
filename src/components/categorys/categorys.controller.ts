@@ -3,11 +3,13 @@ import { CategorysService } from './categorys.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
-@Controller('categorys')
+@Controller('category')
 export class CategorysController {
-  constructor(private readonly categorysService: CategorysService) {}
+  constructor(
+    private readonly categorysService: CategorysService
+  ) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categorysService.create(createCategoryDto);
   }
