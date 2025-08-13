@@ -6,8 +6,8 @@ import { Project } from './entities/project.entity';
 import { Repository } from 'typeorm';
 import type { Request } from 'express';
 import { Status } from '../enums/status.ennum';
-import { Category } from '../category/entities/category.entity';
 import { User } from '../user/entities/user.entity';
+import { Category } from '../categorys/entities/category.entity';
 
 @Injectable()
 export class ProjectService {

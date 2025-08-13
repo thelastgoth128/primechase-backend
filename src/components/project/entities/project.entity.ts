@@ -1,4 +1,4 @@
-import { Category } from "src/components/category/entities/category.entity";
+import { Category } from "src/components/categorys/entities/category.entity";
 import { Status } from "src/components/enums/status.ennum";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 

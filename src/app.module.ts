@@ -12,14 +12,13 @@ import { JwtMiddleware } from './components/services/jwtMiddleware';
 import { MulterModule } from '@nestjs/platform-express';
 import { CloudinaryService } from './components/services/cloudinary.service';
 import { ImageModule } from './components/image/image.module';
-import { CategoryModule } from './components/category/category.module';
-import { Category } from './components/category/entities/category.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ImageController } from './components/image/image.controller';
 import { CategorysModule } from './components/categorys/categorys.module';
+import { Category } from './components/categorys/entities/category.entity';
 
 @Module({
-  imports: [UserModule, AuthModule, ProjectModule, ImageModule, CategoryModule, JwtModule,
+  imports: [UserModule, AuthModule, ProjectModule, ImageModule, CategorysModule, JwtModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath:".env"
