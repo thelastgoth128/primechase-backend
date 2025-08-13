@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt'
-import { Response } from 'express';
+import type { Response } from 'express';
 import { MailService } from '../services/mail.service';
 import { nanoid } from "nanoid";
 import { addMinutes } from 'date-fns'
@@ -90,12 +90,10 @@ export class AuthService {
   }
 
   async logout(res:Response){
-    res.clearCookie('jwt',{
+    await res.clearCookie('jwt',{
       httpOnly:true,
       secure:true
     })
-    return({
-      message : "you have logged out"
-    })
+    return res.status(200).json({message: 'You have logged out'})
   }
 }
