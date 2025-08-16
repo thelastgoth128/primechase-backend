@@ -27,6 +27,17 @@ export class CategorysService {
     return await this.catrep.findOne({where: {id}});
   }
 
+  async findCategoryProjetcs(id : number){
+    const category = await this.catrep.findOne({where: {id}})
+    if(!category) {
+      throw new NotFoundException("Category not found");
+    }
+    
+    const projects = await this.projectrep.find({where: {category: {id : category.id}}})
+
+    return projects
+  }
+
   async findCategoriesWithAProject() {
     const categories = await this.catrep.find()
 

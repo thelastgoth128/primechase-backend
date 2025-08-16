@@ -21,6 +21,11 @@ export class CategorysController {
     return this.categorysService.findAll();
   }
 
+  @Get(':id/projects')
+  async findCategoryProjects(@Param('id') id :number) {
+    return await this.categorysService.findCategoryProjetcs(id)
+  }
+
   @Get('follow')
   async findCategoriesWithProject() {
     return await this.categorysService.findCategoriesWithAProject()
