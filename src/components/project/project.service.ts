@@ -35,6 +35,8 @@ export class ProjectService {
       category,
       status: Status.pending,
       created_at: new Date(),
+      client_name: user?.name,
+      client_email: user?.email,
     })
     await this.projectrep.save(project)
     return {
