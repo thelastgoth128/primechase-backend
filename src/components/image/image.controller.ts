@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Controller, Param, Patch, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { CloudinaryService } from "../services/cloudinary.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ImageService } from "./image.service";
@@ -12,15 +12,28 @@ export class ImageController {
         private readonly imageService : ImageService
     ){}
 
-    @Post('upload')
+    @Post('upload/:id')
     @UseInterceptors(FileInterceptor('image'))
-    async uploadProjectImage(@UploadedFile() file: Express.Multer.File,@Body('project_id') id: number){
+    async uploadProjectImage(@UploadedFile() file: Express.Multer.File,@Param('id') id: number){
         try{
             const result = await this.cloudinaryService.uploadImage(file.path)
             await this.imageService.saveProjectImageUrl(id,result.url)
             return result
         }catch(error){
             throw new Error('Failed to upload image')
+        }
+    }
+
+    @Patch('update/:id')
+    @UseInterceptors(FileInterceptor('image'))
+    async updateImage(@UploadedFile() file: Express.Multer.File, @Param("id") id: number,){
+        try{
+            const result = await this.cloudinaryService.uploadImage(file.path)
+            await this.imageService.saveProjectImageUrl(id,result.url)
+
+            return result
+        }catch(error){
+            throw new Error('Failed to update image')
         }
     }
 }
