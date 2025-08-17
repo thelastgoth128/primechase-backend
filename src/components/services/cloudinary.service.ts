@@ -1,4 +1,4 @@
-import { UploadApiErrorResponse, UploadApiResponse, v2 } from "cloudinary";
+import { UploadApiErrorResponse, UploadApiOptions, UploadApiResponse, v2 } from "cloudinary";
 
 export class CloudinaryService {
     constructor(){
@@ -8,9 +8,9 @@ export class CloudinaryService {
             api_secret: process.env.API_SECRET,
         })
     }
-    async uploadImage(filePath: string): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    async uploadImage(filePath: string,options?: UploadApiOptions): Promise<UploadApiResponse | UploadApiErrorResponse> {
         return new Promise((resolve, reject) => {
-            v2.uploader.upload(filePath,{folder:'Primechase Studios'}, (error,result)=>{
+            v2.uploader.upload(filePath,{folder:'Primechase Studios',options}, (error,result)=>{
                 if(error){
                     return reject(error)
                 }
