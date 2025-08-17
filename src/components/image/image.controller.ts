@@ -26,10 +26,10 @@ export class ImageController {
                     {fetch_format: 'auto'}
                 ]
             })
-            await this.imageService.saveProjectImageUrl(id,result.secure_url)
+            await this.imageService.saveProjectImageUrl(id,result.optimized_url)
             return {
                 message:'Image uploaded successfully',
-                url: result.secure_url
+                url: result.optimized_url
             }
         }catch(error){
             throw new Error('Failed to upload image')
