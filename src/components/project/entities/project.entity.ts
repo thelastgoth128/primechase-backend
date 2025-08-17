@@ -49,7 +49,9 @@ export class Project {
     @Column({nullable: true})
     rejection_reason: string
 
-    @ManyToOne(()=>Category,category=>category.project_id)
+    @ManyToOne(()=>Category,category=>category.project_id,{
+        onDelete:'CASCADE'
+    })
     @JoinColumn({name: 'category_id'})
     category: Category
 
