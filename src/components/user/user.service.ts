@@ -13,13 +13,13 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userrep: Repository<User>,
-    private jwtService : JwtService
-  ){}
+    private jwtService: JwtService
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     const { email } = createUserDto
 
-    const exists = await this.userrep.findOne({where: {email}})
+    const exists = await this.userrep.findOne({ where: { email } })
     if (exists) {
       throw new ForbiddenException('email already exists, please login')
     }
@@ -30,13 +30,13 @@ export class UserService {
 
     const payload = {
       userid: user.userid,
-      name: user.name,  
+      name: user.name,
       email: user.email,
       role: user.role,
       createdat: user.created_at
     }
     const jwt = await this.jwtService.signAsync(payload, {
-      secret:process.env.JWT_SECRET
+      secret: process.env.JWT_SECRET
     })
     return {
       access_token: jwt,
@@ -49,25 +49,25 @@ export class UserService {
   }
 
   async findMail(email: string) {
-    return await this.userrep.findOne({where: {email}})
+    return await this.userrep.findOne({ where: { email } })
   }
 
   async findOne(id: number) {
-    return await this.userrep.findOne({where:{userid: id}})
+    return await this.userrep.findOne({ where: { userid: id } })
   }
 
-  async update(updateUserDto: UpdateUserDto,@Req() req:Request) {
-    const user = req.user?.userid
-    const requester = await this.userrep.findOne({where: {userid:user}})
-    if(!requester){
+  async update(updateUserDto: UpdateUserDto, @Req() req: any) {
+    const user = (req as any).user?.userid
+    const requester = await this.userrep.findOne({ where: { userid: user } })
+    if (!requester) {
       throw new NotFoundException('user not found')
     }
     Object.assign(requester, updateUserDto)
     await this.userrep.save(requester)
-    
-     const payload = {
+
+    const payload = {
       userid: requester.userid,
-      name: requester.name,  
+      name: requester.name,
       email: requester.email,
       role: requester.role,
       createdat: requester.created_at
@@ -77,7 +77,7 @@ export class UserService {
     }
   }
 
-  async saveResetToken(email: string, reset_token: string, expirationTime: Date){
+  async saveResetToken(email: string, reset_token: string, expirationTime: Date) {
     await this.userrep.update(
       { email },
       {
@@ -87,15 +87,15 @@ export class UserService {
     )
   }
 
-  async remove(@Req() req:Request) {
-    const userid = req.user?.userid
-    const requester = await this.userrep.findOne({where:{userid}})
+  async remove(@Req() req: any) {
+    const userid = (req as any).user?.userid
+    const requester = await this.userrep.findOne({ where: { userid } })
 
-    if(!userid){
+    if (!userid) {
       throw new BadRequestException('Missing user ID')
     }
 
-    if(!requester){
+    if (!requester) {
       throw new NotFoundException("user not found")
     }
     await this.userrep.delete(userid)
