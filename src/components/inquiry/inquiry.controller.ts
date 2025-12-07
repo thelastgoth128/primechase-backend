@@ -5,6 +5,7 @@ import { Public } from '../auth/guards/public';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from '../enums/role.enum';
 
+@Public()
 @Controller('inquiry')
 export class InquiryController {
     constructor(private readonly inquiryService: InquiryService) { }

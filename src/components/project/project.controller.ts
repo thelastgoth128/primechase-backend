@@ -7,7 +7,7 @@ import { Public } from '../auth/guards/public';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../services/cloudinary.service';
 
-//@Public()
+@Public()
 @Controller('project')
 export class ProjectController {
   constructor(
