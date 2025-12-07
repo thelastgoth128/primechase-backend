@@ -1,6 +1,5 @@
-import { IsDate, IsEmail, IsString, IsStrongPassword } from "class-validator";
+import { IsDate, IsEmail, IsString, IsStrongPassword, IsOptional } from "class-validator";
 import { Role } from "src/components/enums/role.enum";
-
 
 export class CreateUserDto {
     @IsString()
@@ -19,8 +18,10 @@ export class CreateUserDto {
     created_at: Date
 
     @IsString()
-    reset_token : string
+    @IsOptional()
+    reset_token?: string
 
-    @IsString()
-    reset_token_expiry: Date
+    @IsDate()
+    @IsOptional()
+    reset_token_expiry?: Date
 }

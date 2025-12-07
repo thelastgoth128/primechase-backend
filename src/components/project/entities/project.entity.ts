@@ -17,44 +17,47 @@ export class Project {
     @Column({ nullable: true })
     style_reference: string
 
-    @Column('text',{array: true,nullable: true},)
+    @Column('text', { array: true, nullable: true },)
     color_preferences: string[]
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     font_preferences: string
 
-    @Column({nullable:true})
+    @Column({ nullable: true })
     image_url: string
 
-    @Column({nullable : true})
+    @Column('text', { array: true, nullable: true })
+    gallery: string[]
+
+    @Column({ nullable: true })
     start_date: Date
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     due_date: Date
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     client_name: string
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     client_email: string
 
     @Column({
-        type:'enum',
-        enum:Status,
-        default:Status.pending,
-        nullable:true
+        type: 'enum',
+        enum: Status,
+        default: Status.pending,
+        nullable: true
     })
     status: string
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     rejection_reason: string
 
-    @ManyToOne(()=>Category,category=>category.project_id,{
-        onDelete:'CASCADE'
+    @ManyToOne(() => Category, category => category.project_id, {
+        onDelete: 'CASCADE'
     })
-    @JoinColumn({name: 'category_id'})
+    @JoinColumn({ name: 'category_id' })
     category: Category
 
-    @Column({nullable:true})
+    @Column({ nullable: true })
     created_at: Date
 }

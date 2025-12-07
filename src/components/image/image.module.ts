@@ -5,9 +5,9 @@ import { ImageService } from "./image.service";
 import { CloudinaryService } from "../services/cloudinary.service";
 
 @Module({
-    imports:[ProjectModule],
-    controllers:[ImageController],
-    providers:[ImageService,CloudinaryService],
-    exports:[ImageService]
+    imports: [ProjectModule],
+    controllers: [ImageController],
+    providers: [ImageService, CloudinaryService],
+    exports: [ImageService, CloudinaryService]
 })
-export class ImageModule {}
+export class ImageModule { }
