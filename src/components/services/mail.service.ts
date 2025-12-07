@@ -2,10 +2,10 @@ import { Injectable } from "@nestjs/common";
 import * as nodemailer from 'nodemailer'
 
 @Injectable()
-export class MailService{
+export class MailService {
     private transporter: nodemailer.Transporter
 
-    constructor(){
+    constructor() {
         this.transporter = nodemailer.createTransport({
             service: 'Gmail',
             auth: {
@@ -15,13 +15,13 @@ export class MailService{
         })
     }
 
-    async sendPasswordResetEmail(to:string, token:string){
+    async sendPasswordResetEmail(to: string, token: string) {
         const resetLink = `http://localhost:3000/reset-password?token=${token}`
         const mailOptions = {
             from: 'primechase-studios',
             to: to,
             subject: 'Password Reset Request',
-            html:`
+            html: `
             <div> style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
                 <h2>Password Reset Request</h2>
                 <p>Click the link below to reset your password:</p>
@@ -33,12 +33,12 @@ export class MailService{
         await this.transporter.sendMail(mailOptions)
     }
 
-    async sendCreateAccountEmail(to:string,name:string){
+    async sendCreateAccountEmail(to: string, name: string) {
         const mailOptions = {
             from: 'primechase-studios',
-            to:to,
+            to: to,
             subject: 'Welcome to Primechase-Studios',
-            html:`
+            html: `
             <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
                 <h2 style="color: #4CAF50;">Hey ${name},</h2>
                 <p>Welcome to <strong>Primechase Studios</strong> — we’re thrilled to have you on board!</p>
@@ -63,5 +63,26 @@ export class MailService{
             `
         }
         await this.transporter.sendMail(mailOptions)
+    }
+
+    async sendInquiryAlert(inquiry: any) {
+        const mailOptions = {
+            from: 'primechase-studios',
+            to: process.env.APP_EMAIL, // Send to Admin
+            subject: `New Inquiry from ${inquiry.name}`,
+            html: `
+            <div style="font-family: Arial, sans-serif;">
+                <h2>New Inquiry Received</h2>
+                <p><strong>Name:</strong> ${inquiry.name}</p>
+                <p><strong>Email:</strong> ${inquiry.email}</p>
+                <p><strong>Message:</strong></p>
+                <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #ccc;">
+                    ${inquiry.message}
+                </blockquote>
+                <p>Login to the dashboard to view and respond.</p>
+            </div>
+            `
+        };
+        await this.transporter.sendMail(mailOptions);
     }
 }
