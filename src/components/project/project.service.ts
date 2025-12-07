@@ -12,19 +12,19 @@ import { Category } from '../categorys/entities/category.entity';
 @Injectable()
 export class ProjectService {
   @InjectRepository(Project)
-  private readonly projectrep : Repository<Project>
+  private readonly projectrep: Repository<Project>
   @InjectRepository(User)
-  private readonly userrep : Repository<User>
+  private readonly userrep: Repository<User>
   @InjectRepository(Category)
-  private readonly categoryRepo : Repository<Category>
+  private readonly categoryRepo: Repository<Category>
 
-  async create(createProjectDto: CreateProjectDto, @Req() req:Request) {
+  async create(createProjectDto: CreateProjectDto, @Req() req: any) {
     const userid = req.user?.userid
 
     if (!userid) {
       throw new NotFoundException('user not found')
     }
-    const user = await this.userrep.findOne({where: {userid}})
+    const user = await this.userrep.findOne({ where: { userid } })
     const category = await this.categoryRepo.findOneBy({ id: createProjectDto.category });
 
     if (!category) {
@@ -40,47 +40,49 @@ export class ProjectService {
     })
     await this.projectrep.save(project)
     return {
-      message:'Project successfully created, waiting for admin to approve'
+      message: 'Project successfully created, waiting for admin to approve'
     }
   }
+
   //admin
   async findAll() {
     return await this.projectrep.find()
   }
+
   //users projects
-  async findAllByUser(@Req() req:Request) {
+  async findAllByUser(@Req() req: any) {
     const userid = req.user?.userid
-    if(!userid){
+    if (!userid) {
       throw new NotFoundException("User not found")
     }
-    const user = await this.userrep.findOne({where:{userid}})
+    const user = await this.userrep.findOne({ where: { userid } })
 
 
-    return await this.projectrep.find({where: {client_email:user?.email}})
+    return await this.projectrep.find({ where: { client_email: user?.email } })
   }
 
   async findOne(id: number) {
-    return await this.projectrep.findOne({where: {id:id}})
+    return await this.projectrep.findOne({ where: { id: id } })
   }
 
   async update(id: number, updateProjectDto: UpdateProjectDto) {
-    const project = await this.projectrep.findOne({where: {id}})
-    if (!project){
+    const project = await this.projectrep.findOne({ where: { id } })
+    if (!project) {
       throw new NotFoundException("Project not found")
     }
     Object.assign(project, updateProjectDto)
-    return{
-      message:"Successfully updated"
+    return {
+      message: "Successfully updated"
     }
   }
 
   async remove(id: number) {
-    const project = await this.projectrep.findOne({where:{id}})
-    if (!project){
+    const project = await this.projectrep.findOne({ where: { id } })
+    if (!project) {
       throw new NotFoundException("project not found")
     }
     await this.projectrep.delete(id)
-    return{
+    return {
       message: "Successfully deleted Project"
     }
   }
